@@ -1,5 +1,8 @@
 name: CI/CD Pipeline
 
+permissions:
+  packages: write
+  contents: read
 # Trigger on push to main and pull requests
 on:
   push:
