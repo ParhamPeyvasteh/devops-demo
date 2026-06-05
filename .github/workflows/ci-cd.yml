@@ -58,3 +58,26 @@ jobs:
           tags: |
            ghcr.io/parhampeyvasteh/devops-demo:latest
            ghcr.io/parhampeyvasteh/devops-demo:${{ github.sha }}
+
+# ──────────────────────────────────────
+  # Job 3: Deploy to Kubernetes
+  # ──────────────────────────────────────
+  deploy:
+    needs: docker
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Update image tag in manifests
+        run: |
+          cd kubernetes
+          sed -i "s|ghcr.io/parhampeyvasteh/devops-demo:latest|ghcr.io/parhampeyvasteh/devops-demo:${{ github.sha }}|g" deployment.yaml
+
+      - name: Show updated manifest (for demo)
+        run: cat kubernetes/deployment.yaml
+
+      # In production, you'd add kubectl apply here:
+      # - name: Deploy to cluster
+      #   run: kubectl apply -f kubernetes/
