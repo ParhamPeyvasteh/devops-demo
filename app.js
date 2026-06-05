@@ -32,4 +32,19 @@ if (require.main === module) {
   });
 }
 
+app.get('/greet', (req, res) => {
+  const name = req.query.name;
+
+  if (!name) {
+    return res.status(400).json({
+      error: 'Missing "name" query parameter. Example: /greet?name=Parham'
+    });
+  }
+
+  res.json({
+    message: `Hello, ${name}! Welcome to our DevOps demo.`,
+    time: new Date().toISOString()
+  });
+});
+
 module.exports = app; // exported so we can test it

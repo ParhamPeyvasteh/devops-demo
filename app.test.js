@@ -26,3 +26,18 @@ describe('GET /counter', () => {
     expect(res2.body.visits).toBe(2);
   });
 });
+
+describe('GET /greet', () => {
+  it('returns greeting when name is provided', async () => {
+    const res = await request(app).get('/greet?name=Parham');
+    expect(res.statusCode).toBe(200);
+    expect(res.body.message).toBe('Hello, Parham! Welcome to our DevOps demo.');
+    expect(res.body).toHaveProperty('time');
+  });
+
+  it('returns 400 when name is missing', async () => {
+    const res = await request(app).get('/greet');
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toBe('Missing "name" query parameter. Example: /greet?name=Parham');
+  });
+});
